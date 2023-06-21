@@ -27,7 +27,7 @@ def get_data_path(path):
 def read_featuremask():
     # check featuremask to retrieve current featuremask
     with open("/sys/module/amdgpu/parameters/ppfeaturemask") as origin_file:
-        return int(origin_file.readline())
+        return int(origin_file.readline(), 16)
 
 
 def refresh(refreshtime,Handler,Plot):
