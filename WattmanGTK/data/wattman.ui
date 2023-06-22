@@ -41,8 +41,10 @@
     <property name="type-hint">dialog</property>
     <property name="program-name">WattmanGTK</property>
     <property name="version">GIT Version</property>
-    <property name="copyright" translatable="yes">Copyright (c) 2018 Bouke Haarsma</property>
+    <property name="copyright" translatable="yes">Copyright (c) 2018 Bouke Haarsma
+Forked and modified by josh4amd</property>
     <property name="website">https://www.github.com/BoukeHaarsma23/WattmanGTK</property>
+    <property name="website-label" translatable="yes">WattmanGtk</property>
     <property name="logo">WattmanGTK.svg</property>
     <property name="license-type">gpl-2-0</property>
     <child internal-child="vbox">
@@ -68,7 +70,19 @@
           </packing>
         </child>
         <child>
-          <placeholder/>
+          <object class="GtkLinkButton">
+            <property name="label" translatable="yes">MoreWattmanGTK</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="relief">none</property>
+            <property name="uri">https://github.com/josh4amd/MoreWattmanGTK</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
         </child>
       </object>
     </child>
@@ -2650,27 +2664,29 @@ XXXX RPM</property>
           </packing>
         </child>
         <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="margin-start">20</property>
-            <property name="margin-end">23</property>
-            <property name="label" translatable="yes">*** Note: Press enter on the text field when done 
-editing values if not using the sliders ***</property>
-            <property name="track-visited-links">False</property>
-            <attributes>
-              <attribute name="scale" value="2"/>
-              <attribute name="underline" value="True"/>
-              <attribute name="foreground" value="#e0e01b1b2424"/>
-            </attributes>
-          </object>
-        </child>
-        <child>
           <object class="GtkComboBox" id="GPU Selection">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="wrap-width">1</property>
             <property name="button-sensitivity">on</property>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="margin-start">20</property>
+            <property name="margin-end">23</property>
+            <property name="label" translatable="yes">*** Note: Press enter on the text field when done editing values if not using the sliders ***</property>
+            <property name="track-visited-links">False</property>
+            <attributes>
+              <attribute name="scale" value="1.75"/>
+              <attribute name="underline" value="True"/>
+              <attribute name="foreground" value="#e0e01b1b2424"/>
+            </attributes>
           </object>
           <packing>
             <property name="position">1</property>

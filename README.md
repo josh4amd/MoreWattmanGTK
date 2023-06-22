@@ -1,13 +1,16 @@
 # MoreWattmanGTK
 
-This is a fork of WattmanGTK with a few changes.
+This is a fork of WattmanGTK with a few changes to the GUI and addition applying settings from GUI.
 
 This is a Python3 program which uses a simple GTK gui to view, monitor and in the future overclock a Radeon GPU on Linux. 
-![Main screen](https://i.imgur.com/ahrQrEO.png)
+<a href="https://i.imgur.com/oH0Alwz.png">
+  <img src="https://i.imgur.com/oH0Alwz.png" width="60%">
+</a>
+
 ## What can it do?
  * View memory and GPU P-states including voltages.
  * Ability to monitor signals from GPU sensors by means of plotting
- * Write a bash file with overclock settings
+ * ~~Write a bash file with overclock settings~~ Apply new settings from GUI (Still outputs a bash file for reference)
  * Multi GPU support in top dropdown list
 ## What can't it do?
  * ~~Directly apply values from GUI (this will be a future addition)~~ --Added
@@ -22,10 +25,14 @@ This is a Python3 program which uses a simple GTK gui to view, monitor and in th
 
 * Linux kernel 4.8+ (Ubuntu 16.10 or newer)
 * The overdrive kernel parameter must be set.
-* Python3 (3.6+)
+    * (You can run the program and it will detect if it is set or not. See FAQ for more info)
+* Python3 (3.6+), (If running from source)
 
 ## To Run
+* Download the binary runtime
+* run ``` ./MoreWattmanGTK.bin ```, or double click if your OS supports that.
 
+Or to run from source
 ```
     pip install pygobject matplotlib pycairo
 ```
@@ -34,8 +41,14 @@ This is a Python3 program which uses a simple GTK gui to view, monitor and in th
     python3 run.py
 ```
 
-## Contributing & Donations
-Contributions can be made in terms of:
+
+## **User Guide**
+Make your changes, then at the top right you can revert to undo or click apply to apply them.
+When you click apply you will be asked for your admin password if you are not running as sudo/root.
+You can review the commands to be run and accept or cancel.
+### **Note**: If you are making change directly in the entry fields press enter when you are done. Otherwise the changes will not be recognized.
+
+
  ## FAQ
  ### How do I know my card has the overdrive bit enabled
  **Just try to run WattmanGTK.**

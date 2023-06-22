@@ -548,8 +548,10 @@ class Handler:
 
 
         outputfile.close()
-        execute_apply(self.builder.get_object("Wattman"))
-        #exit()
+        if execute_apply(self.builder.get_object("Wattman")): #successful
+            self.builder.get_object("Revert").set_visible(False)
+            self.builder.get_object("Apply").set_visible(False)
+        
     
     def revert(self, button):
         # On pressing revert button
@@ -560,9 +562,11 @@ class Handler:
         self.builder.get_object("About").run()
         self.builder.get_object("About").hide()
 
+###
 ### It would be best to use polkit or similar here in the future.
+###
 def execute_apply(window):
-    # Create a dialog to ask for the admin password
+    successful = False
     dialog = Gtk.Dialog(
         "Admin Password Required",
         window,
@@ -577,19 +581,18 @@ def execute_apply(window):
     password_entry.set_placeholder_text("Enter admin password")
     dialog.get_content_area().add(password_entry)
 
-    if not verify_password(""):
-        print("show all")
+    if not verify_password(""): # Already admin. ### Clean up this code.
         dialog.show_all()
 
-        # Run the command as sudo when OK is clicked
+        # Verify password
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
-            command = "some_command"
-            run_command_as_sudo(window, password_entry, "Set_WattmanGTK_Settings.sh")
-
+            successful = run_command_as_sudo(window, password_entry, "Set_WattmanGTK_Settings.sh")
+        
         dialog.destroy()
     else:
-        run_command_as_sudo(window, password_entry, "Set_WattmanGTK_Settings.sh")
+        successful = run_command_as_sudo(window, password_entry, "Set_WattmanGTK_Settings.sh")
+    return successful
 
 def verify_password(password):
     # Test command to verify password
@@ -598,34 +601,16 @@ def verify_password(password):
 
     process = subprocess.Popen(sudo_command, shell=True)
     retval = process.wait()
-    print("retval", retval)
     return retval == 0
 
 def run_command_as_sudo(window, password_entry, commands_file):
-    """
-    Executes a series of commands as a sudo user after verifying the password.
-
-    Args:
-        window (Gtk.Window): The parent window for message dialogs.
-        password_entry (Gtk.Entry): The entry widget containing the password.
-        commands_file (str): The file path to the file containing the commands.
-
-    Returns:
-        None
-    """
-
-    # Extract the password from the password_entry widget
+    successful = False
     password = password_entry.get_text()
 
-    # Verify the entered password
     if verify_password(password):
-        # Password verified, proceed to read and display commands
-
-        # Read the commands from the specified file
         with open(commands_file, "r") as file:
             commands = file.read()
 
-        # Create a message dialog to display the commands
         dialog = Gtk.MessageDialog(
             transient_for=window,
             flags=0,
@@ -635,15 +620,13 @@ def run_command_as_sudo(window, password_entry, commands_file):
         )
         dialog.format_secondary_text(commands)
 
-        # Show the dialog and wait for user response
         response = dialog.run()
 
-        # User clicked "Yes" to run the commands
         if response == Gtk.ResponseType.YES:
             # Run the commands with sudo
             sudo_command = f"echo '{password}' | sudo -S bash -c '{commands}'"
             process = subprocess.Popen(sudo_command, shell=True)
-            process.wait()  # Wait for the command to finish executing
+            process.wait() 
 
             # Display an info dialog to indicate success
             info_dialog = Gtk.MessageDialog(
@@ -655,10 +638,10 @@ def run_command_as_sudo(window, password_entry, commands_file):
             )
             info_dialog.run()
             info_dialog.destroy()
+            successful = True
 
         # Close the commands dialog
         dialog.destroy()
-
     else:
         # Password verification failed
         dialog = Gtk.MessageDialog(
@@ -670,3 +653,4 @@ def run_command_as_sudo(window, password_entry, commands_file):
         )
         dialog.run()
         dialog.destroy()
+    return successful
