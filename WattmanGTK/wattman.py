@@ -9,6 +9,7 @@ import signal               # for sigint handling
 import subprocess           # for running lspci
 import os
 import re                   # for getting fancy GPU name
+import sys
 from optparse import OptionParser
 from pathlib import Path
 
@@ -65,11 +66,12 @@ def main():
         options.frequency = 1
 
     # Check python version
-    (python_major, python_minor, _) = platform.python_version_tuple()
-    if python_major < "3":
+    python_major = sys.version_info.major
+    python_minor = sys.version_info.minor
+    if python_major < 3:
         print("Please run with python3 (3.6+)")
         exit()
-    elif python_major == "3" and python_minor < "6":
+    elif python_major == 3 and python_minor < 6:
         print("Please use python version 3.6 and up")
         exit()
 
